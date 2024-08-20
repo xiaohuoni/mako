@@ -47,7 +47,7 @@ jobs:
             build: |
               rustup target add x86_64-apple-darwin
               pnpm --filter @umijs/mako build --target x86_64-apple-darwin
-              strip -x ./upload-artifact/*.node
+              strip -x ./packages/mako/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
@@ -55,24 +55,24 @@ jobs:
               set -e &&
               rustup target add x86_64-unknown-linux-gnu &&
               pnpm --filter @umijs/mako build --target x86_64-unknown-linux-gnu &&
-              strip ./upload-artifact/*.node
+              strip ./packages/mako/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
               rustup target add aarch64-apple-darwin
               pnpm --filter @umijs/mako build --target aarch64-apple-darwin
-              strip -x ./upload-artifact/*.node
+              strip -x ./packages/mako/*.node
           - host: windows-latest
             build: |
               rustup target add x86_64-pc-windows-msvc
               pnpm --filter @umijs/mako build --target x86_64-pc-windows-msvc
-              strip -x ./upload-artifact/*.node
+              strip -x ./packages/mako/*.node
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
               rustup target add i686-pc-windows-msvc
               pnpm --filter @umijs/mako build --target i686-pc-windows-msvc
-              strip -x ./upload-artifact/*.node
+              strip -x ./packages/mako/*.node
             target: i686-pc-windows-msvc
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
@@ -165,10 +165,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: packages/mako/artifacts
-      - name: Move artifacts
-        run: pnpm --filter @umijs/mako artifacts
       - name: List packages
         run: ls -R ./packages/mako/npm
+      - name: Move artifacts
+        run: pnpm --filter @umijs/mako artifacts
         shell: bash
 
       - name: Publish
