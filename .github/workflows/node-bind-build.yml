@@ -165,9 +165,9 @@ jobs:
         id: download
         uses: actions/download-artifact@v3
         with:
-          path: packages/mako
+          path: packages/mako/artifacts
       - name: List packages
-        run: ls -R ./packages/mako
+        run: ls -R ./packages/mako/artifacts
       - name: 'Echo download path'
         run: echo ${{steps.download.outputs.download-path}}
       - name: Move artifacts
