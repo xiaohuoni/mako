@@ -165,13 +165,15 @@ jobs:
         id: download
         uses: actions/download-artifact@v3
         with:
-          path: packages/mako/artifacts
+          path: packages/mako
+      - name: List packages
+        run: ls -R ./packages/mako
       - name: 'Echo download path'
         run: echo ${{steps.download.outputs.download-path}}
-      - name: List packages
-        run: ls -R ./packages/mako/npm
       - name: Move artifacts
         run: pnpm --filter @umijs/mako artifacts
+      - name: List packages
+        run: ls -R ./packages/mako/npm
         shell: bash
 
       - name: Publish
