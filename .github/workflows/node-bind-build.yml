@@ -45,7 +45,6 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              rustup update nightly-2023-10-24
               rustup target add x86_64-apple-darwin
               pnpm --filter @umijs/mako build --target x86_64-apple-darwin
               strip -x ./packages/mako/*.node
@@ -54,31 +53,26 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
-              rustup update nightly-2023-10-24 &&
               rustup target add x86_64-unknown-linux-gnu &&
               pnpm --filter @umijs/mako build --target x86_64-unknown-linux-gnu &&
               strip ./packages/mako/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
-              rustup update nightly-2023-10-24
               rustup target add aarch64-apple-darwin
               pnpm --filter @umijs/mako build --target aarch64-apple-darwin
               strip -x ./packages/mako/*.node
           - host: windows-latest
             build: |
-              rustup update nightly-2023-10-24
               rustup target add x86_64-pc-windows-msvc
               pnpm --filter @umijs/mako build --target x86_64-pc-windows-msvc
               strip -x ./packages/mako/*.node
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
-              rustup update nightly-2023-10-24
               rustup target add i686-pc-windows-msvc
               pnpm --filter @umijs/mako build --target i686-pc-windows-msvc
               strip -x ./packages/mako/*.node
-              npm run test
             target: i686-pc-windows-msvc
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
@@ -145,7 +139,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ./packaegs/mako/${{ env.APP_NAME }}.*.node
+          path: ./packages/mako/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   publish:
     name: Publish
@@ -170,16 +164,21 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
-          path: packaegs/mako/artifacts
+          path: packages/mako/artifacts
       - name: Move artifacts
         run: pnpm --filter @umijs/mako artifacts
       - name: List packages
-        run: ls -R ./packaegs/mako/npm
+        run: ls -R ./packages/mako/npm
         shell: bash
 
       - name: Publish
         run: |
-          echo "Not a release, skipping publish"
+          if git log -1 --pretty=%B | grep "^release: [0-9]\+\.[0-9]\+\.[0-9]\+"; then
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
+          else
+            echo "Not a release, skipping publish"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
