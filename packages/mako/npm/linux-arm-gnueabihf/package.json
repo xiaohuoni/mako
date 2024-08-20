@@ -1,5 +1,5 @@
 {
-  "name": "@umijs/mako-linux-arm-gnueabihf",
+  "name": "@alita/mako-linux-arm-gnueabihf",
   "version": "0.0.0",
   "os": [
     "linux"

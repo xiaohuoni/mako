@@ -1,3 +1,3 @@
-# `@umijs/mako-darwin-universal`
+# `@alita/mako-darwin-universal`
 
-This is the **universal-apple-darwin** binary for `@umijs/mako`
+This is the **universal-apple-darwin** binary for `@alita/mako`

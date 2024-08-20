@@ -1,3 +1,3 @@
-# `@umijs/mako-linux-arm64-musl`
+# `@alita/mako-linux-arm64-musl`
 
-This is the **aarch64-unknown-linux-musl** binary for `@umijs/mako`
+This is the **aarch64-unknown-linux-musl** binary for `@alita/mako`

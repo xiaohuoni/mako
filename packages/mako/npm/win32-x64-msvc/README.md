@@ -1,3 +1,3 @@
-# `@umijs/mako-win32-x64-msvc`
+# `@alita/mako-win32-x64-msvc`
 
-This is the **x86_64-pc-windows-msvc** binary for `@umijs/mako`
+This is the **x86_64-pc-windows-msvc** binary for `@alita/mako`

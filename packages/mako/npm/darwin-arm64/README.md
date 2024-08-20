@@ -1,3 +1,3 @@
-# `@umijs/mako-darwin-arm64`
+# `@alita/mako-darwin-arm64`
 
-This is the **aarch64-apple-darwin** binary for `@umijs/mako`
+This is the **aarch64-apple-darwin** binary for `@alita/mako`

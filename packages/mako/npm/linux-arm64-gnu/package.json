@@ -1,5 +1,5 @@
 {
-  "name": "@umijs/mako-linux-arm64-gnu",
+  "name": "@alita/mako-linux-arm64-gnu",
   "version": "0.0.0",
   "os": [
     "linux"
