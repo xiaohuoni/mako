@@ -45,7 +45,8 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              rustup update stable
+              rustup update nightly-2023-10-24
+              rustup target add x86_64-apple-darwin
               pnpm --filter @umijs/mako build --target x86_64-apple-darwin
               strip -x ./packages/mako/*.node
           - host: ubuntu-latest
@@ -53,26 +54,27 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
-              rustup update stable &&
+              rustup update nightly-2023-10-24 &&
+              rustup target add x86_64-unknown-linux-gnu &&
               pnpm --filter @umijs/mako build --target x86_64-unknown-linux-gnu &&
               strip ./packages/mako/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
-              rustup update stable
+              rustup update nightly-2023-10-24
               rustup target add aarch64-apple-darwin
               pnpm --filter @umijs/mako build --target aarch64-apple-darwin
               strip -x ./packages/mako/*.node
           - host: windows-latest
             build: |
-              rustup update stable
+              rustup update nightly-2023-10-24
               rustup target add x86_64-pc-windows-msvc
               pnpm --filter @umijs/mako build --target x86_64-pc-windows-msvc
               strip -x ./packages/mako/*.node
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
-              rustup update stable
+              rustup update nightly-2023-10-24
               rustup target add i686-pc-windows-msvc
               pnpm --filter @umijs/mako build --target i686-pc-windows-msvc
               strip -x ./packages/mako/*.node
