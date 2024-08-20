@@ -20,7 +20,6 @@ env:
 jobs:
   pre-check:
     name: Check Is Release node-binding
-    if: "contains(github.event.head_commit.message, 'Release')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -60,6 +59,19 @@ jobs:
               rustup target add aarch64-apple-darwin
               pnpm --filter @okamjs/okam build --target aarch64-apple-darwin
               strip -x ./packages/mako/*.node
+          - host: windows-latest
+            build: |
+                rustup target add x86_64-pc-windows-msvc
+                pnpm --filter @okamjs/okam build --target x86_64-pc-windows-msvc
+                strip -x ./packages/mako/*.node
+            target: x86_64-pc-windows-msvc
+          - host: windows-latest
+            build: |
+                rustup target add i686-pc-windows-msvc
+                pnpm --filter @okamjs/okam build --target i686-pc-windows-msvc
+                strip -x ./packages/mako/*.node
+                npm run test
+            target: i686-pc-windows-msvc
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     steps:
