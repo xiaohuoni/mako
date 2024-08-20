@@ -20,6 +20,7 @@ env:
 jobs:
   pre-check:
     name: Check Is Release node-binding
+    if: "contains(github.event.head_commit.message, 'Release')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -44,31 +45,31 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              pnpm --filter @okamjs/okam build --target x86_64-apple-darwin
+              pnpm --filter @umijs/mako build --target x86_64-apple-darwin
               strip -x ./packages/mako/*.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
             build: |-
               set -e &&
-              pnpm --filter @okamjs/okam build --target x86_64-unknown-linux-gnu &&
+              pnpm --filter @umijs/mako build --target x86_64-unknown-linux-gnu &&
               strip ./packages/mako/*.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
               rustup target add aarch64-apple-darwin
-              pnpm --filter @okamjs/okam build --target aarch64-apple-darwin
+              pnpm --filter @umijs/mako build --target aarch64-apple-darwin
               strip -x ./packages/mako/*.node
           - host: windows-latest
             build: |
                 rustup target add x86_64-pc-windows-msvc
-                pnpm --filter @okamjs/okam build --target x86_64-pc-windows-msvc
+                pnpm --filter @umijs/mako build --target x86_64-pc-windows-msvc
                 strip -x ./packages/mako/*.node
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
                 rustup target add i686-pc-windows-msvc
-                pnpm --filter @okamjs/okam build --target i686-pc-windows-msvc
+                pnpm --filter @umijs/mako build --target i686-pc-windows-msvc
                 strip -x ./packages/mako/*.node
                 npm run test
             target: i686-pc-windows-msvc
@@ -168,19 +169,15 @@ jobs:
         with:
           path: packaegs/mako/artifacts
       - name: Move artifacts
-        run: pnpm --filter @okamjs/okam artifacts
+        run: pnpm --filter @umijs/mako artifacts
       - name: List packages
         run: ls -R ./packaegs/mako/npm
         shell: bash
 
       - name: Publish
         run: |
-          if git log -1 --pretty=%B | grep "^Release [0-9]\+\.[0-9]\+\.[0-9]\+"; then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            pnpm --filter @okamjs/okam publish --access public
-          else
-            echo "Not a release, skipping publish"
-          fi
+
+          echo "Not a release, skipping publish"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
