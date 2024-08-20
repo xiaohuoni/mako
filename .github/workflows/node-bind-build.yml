@@ -162,9 +162,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Download all artifacts
+        id: download
         uses: actions/download-artifact@v3
         with:
           path: packages/mako/artifacts
+      - name: 'Echo download path'
+        run: echo ${{steps.download.outputs.download-path}}
       - name: List packages
         run: ls -R ./packages/mako/npm
       - name: Move artifacts
